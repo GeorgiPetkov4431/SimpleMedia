@@ -9,7 +9,7 @@ using SimpleMedia.Data;
 
 namespace SimpleMedia.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(SimpleMediaDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

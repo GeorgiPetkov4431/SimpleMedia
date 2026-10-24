@@ -1,4 +1,4 @@
-namespace SimpleMedia.Models
+namespace SimpleMedia.ViewModels
 {
     public class ErrorViewModel
     {

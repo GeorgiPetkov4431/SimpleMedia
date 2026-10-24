@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleMedia.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class SimpleMediaDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public SimpleMediaDbContext(DbContextOptions<SimpleMediaDbContext> options)
             : base(options)
         {
         }
