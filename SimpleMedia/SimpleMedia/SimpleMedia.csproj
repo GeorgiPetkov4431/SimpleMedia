@@ -16,4 +16,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.23" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleMedia.Common\SimpleMedia.Common.csproj" />
+    <ProjectReference Include="..\SimpleMedia.Data\SimpleMedia.Data.csproj" />
+    <ProjectReference Include="..\SimpleMedia.Services\SimpleMedia.Services.csproj" />
+    <ProjectReference Include="..\SimpleMedia.Web.ViewModels\SimpleMedia.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

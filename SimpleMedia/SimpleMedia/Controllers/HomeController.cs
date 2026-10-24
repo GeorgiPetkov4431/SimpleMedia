@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SimpleMedia.ViewModels;
+using SimpleMedia.Web.ViewModels;
 
 namespace SimpleMedia.Controllers
 {
