@@ -253,7 +253,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("SimpleMedia.Data.Models.Post", b =>
@@ -285,7 +285,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("SimpleMedia.Data.Models.PostLike", b =>
@@ -300,7 +300,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostLikes");
+                    b.ToTable("PostLikes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

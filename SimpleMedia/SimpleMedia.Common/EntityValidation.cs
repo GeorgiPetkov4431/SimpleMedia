@@ -19,5 +19,11 @@
 
             public const string CreatedOnColumnType = "datetime2";
         }
+
+        public static class User
+        {
+            public const int UserNameMinLength = 3;
+            public const int UserNameMaxLength = 15;
+        }
     }
 }
