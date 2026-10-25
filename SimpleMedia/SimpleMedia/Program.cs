@@ -21,9 +21,12 @@ namespace SimpleMedia
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                ConfigureIdentityOptions(options, builder.Configuration);
             })
                 .AddEntityFrameworkStores<SimpleMediaDbContext>();
+
+            // Use DI for Services Here:
+
 
             builder.Services.AddControllersWithViews();
 
@@ -55,6 +58,28 @@ namespace SimpleMedia
             app.MapRazorPages();
 
             app.Run();
+        }
+
+        private static void ConfigureIdentityOptions(IdentityOptions options, ConfigurationManager configuration)
+        {
+            options.Password.RequireDigit =
+                configuration.GetValue<bool>("Identity:Password:RequireDigit");
+            options.Password.RequireLowercase =
+                configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+            options.Password.RequireUppercase =
+                configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+            options.Password.RequireNonAlphanumeric =
+                configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+            options.Password.RequiredUniqueChars =
+                configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
+            options.Password.RequiredLength =
+                configuration.GetValue<int>("Identity:Password:RequiredLength");
+
+            options.SignIn.RequireConfirmedAccount =
+                configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+
+            options.User.RequireUniqueEmail =
+                configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
         }
     }
 }
