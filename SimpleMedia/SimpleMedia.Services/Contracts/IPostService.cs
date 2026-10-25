@@ -12,5 +12,7 @@ namespace SimpleMedia.Services.Contracts
         IEnumerable<PostAllViewModel> GetAllPosts();
 
         void CreatePost(PostFormModel inputModel, string userId);
+
+        PostDetailsViewModel? GetPostDetails(int postId);
     }
 }

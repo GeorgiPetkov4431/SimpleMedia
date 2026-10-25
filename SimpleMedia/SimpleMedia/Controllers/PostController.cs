@@ -18,6 +18,7 @@ namespace SimpleMedia.Controllers
             this._postService = postService;
         }
 
+        [HttpGet]
         public IActionResult All()
         {
             IEnumerable<PostAllViewModel> allposts = this._postService
@@ -48,6 +49,25 @@ namespace SimpleMedia.Controllers
 
             //ViewBag.SuccessMessage = "Post created successfully!";
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            PostDetailsViewModel? postDetails = this._postService
+                .GetPostDetails(id.Value);
+
+            if (postDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(postDetails);
         }
     }
 }

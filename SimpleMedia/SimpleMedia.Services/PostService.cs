@@ -1,4 +1,5 @@
-﻿using SimpleMedia.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMedia.Data;
 using SimpleMedia.Data.Models;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
@@ -42,6 +43,29 @@ namespace SimpleMedia.Services
 
             this._dbContext.Posts.Add(postToCreate);
             this._dbContext.SaveChanges();
+        }
+
+        public PostDetailsViewModel? GetPostDetails(int postId)
+        {
+            Post? post = this._dbContext.Posts
+                .Include(p => p.User)
+                .FirstOrDefault(p => p.Id == postId);
+
+            if (post == null)
+            {
+                return null;
+            }
+
+            PostDetailsViewModel postDetails = new PostDetailsViewModel()
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
+                UserName = post.User.UserName!,
+                CreatedOn = post.CreatedOn.ToString(DateTimeFormat)
+            };
+
+            return postDetails;
         }
     }
 }
