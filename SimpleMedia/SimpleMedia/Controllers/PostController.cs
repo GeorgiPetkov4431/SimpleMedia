@@ -47,8 +47,8 @@ namespace SimpleMedia.Controllers
             string userId = ValidateAuthorizedUserId(GetUserId());
             await this._postService.CreatePostAsync(model, userId);
 
-            //ViewBag.SuccessMessage = "Post created successfully!";
-            return RedirectToAction("Index", "Home");
+            TempData["Success"] = "Post created successfully!";
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
