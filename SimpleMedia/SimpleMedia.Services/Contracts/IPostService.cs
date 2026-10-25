@@ -9,6 +9,8 @@ namespace SimpleMedia.Services.Contracts
 {
     public interface IPostService
     {
+        IEnumerable<PostAllViewModel> GetAllPosts();
+
         void CreatePost(PostFormModel inputModel, string userId);
     }
 }

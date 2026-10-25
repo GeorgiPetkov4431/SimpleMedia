@@ -2,12 +2,7 @@
 using SimpleMedia.Data.Models;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static SimpleMedia.Common.ApplicationConstants;
 
 namespace SimpleMedia.Services
 {
@@ -18,6 +13,21 @@ namespace SimpleMedia.Services
         public PostService(SimpleMediaDbContext dbContext)
         {
             this._dbContext = dbContext;
+        }
+
+        public IEnumerable<PostAllViewModel> GetAllPosts()
+        {
+            IEnumerable<PostAllViewModel> allPosts = this._dbContext.Posts
+                .Select(p => new PostAllViewModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    UserName = p.User.UserName!,
+                    CreatedOn = p.CreatedOn.ToString(DateTimeFormat)
+                })
+                .ToArray();
+
+            return allPosts;
         }
 
         public void CreatePost(PostFormModel inputModel, string userId)

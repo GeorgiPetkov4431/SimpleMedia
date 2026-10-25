@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SimpleMedia.Data;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
-using System.Security.Claims;
 
 namespace SimpleMedia.Controllers
 {
@@ -17,6 +16,14 @@ namespace SimpleMedia.Controllers
         {
             this._dbContext = dbContext;
             this._postService = postService;
+        }
+
+        public IActionResult All()
+        {
+            IEnumerable<PostAllViewModel> allposts = this._postService
+                .GetAllPosts();
+
+            return View(allposts);
         }
 
         [Authorize]
