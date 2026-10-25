@@ -10,10 +10,7 @@
     <ProjectReference Include="..\SimpleMedia.Common\SimpleMedia.Common.csproj" />
     <ProjectReference Include="..\SimpleMedia.Data.Models\SimpleMedia.Data.Models.csproj" />
     <ProjectReference Include="..\SimpleMedia.Data\SimpleMedia.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Contracts\" />
+    <ProjectReference Include="..\SimpleMedia.Web.ViewModels\SimpleMedia.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

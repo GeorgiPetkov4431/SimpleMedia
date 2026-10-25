@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleMedia.Common\SimpleMedia.Common.csproj" />
+  </ItemGroup>
+
 </Project>

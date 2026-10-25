@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SimpleMedia.Data;
+using SimpleMedia.Services;
+using SimpleMedia.Services.Contracts;
 
 namespace SimpleMedia
 {
@@ -26,7 +28,7 @@ namespace SimpleMedia
                 .AddEntityFrameworkStores<SimpleMediaDbContext>();
 
             // Use DI for Services Here:
-
+            builder.Services.AddScoped<IPostService, PostService>();
 
             builder.Services.AddControllersWithViews();
 
