@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleMedia.Web.ViewModels.Post
+﻿namespace SimpleMedia.Web.ViewModels.Post
 {
     public class PostAllViewModel
     {

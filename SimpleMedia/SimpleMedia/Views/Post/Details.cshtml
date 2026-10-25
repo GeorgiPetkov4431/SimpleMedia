@@ -15,12 +15,8 @@
                     @if (canDeletePost)
                     {
                         <div class="ms-auto d-flex gap-2">
-                            <form asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Id" method="post">
-                                <button type="submit" class="btn btn-info">Edit Post</button>
-                            </form>
-                            <form asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id" method="post">
-                                <button type="submit" class="btn btn-danger">Delete Post</button>
-                            </form>
+                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Edit Post</a>
+                            <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Post</a>
                         </div>
                     }
                 </div>

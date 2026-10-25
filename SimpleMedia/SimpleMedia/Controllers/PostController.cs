@@ -52,7 +52,7 @@ namespace SimpleMedia.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details([FromRoute] int? id)
         {
             if (id == null || id <= 0)
             {
@@ -68,6 +68,73 @@ namespace SimpleMedia.Controllers
             }
 
             return View(postDetails);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromRoute] int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            string userId = ValidateAuthorizedUserId(GetUserId());
+            try
+            {
+                PostFormModel? postForEditing = await this._postService
+                .GetPostForEditingAsync(id.Value, userId);
+
+                if (postForEditing == null)
+                {
+                    return NotFound();
+                }
+
+                return View(postForEditing);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                TempData["Error"] = e.Message;
+
+                return RedirectToAction(nameof(All));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromRoute] int? id, PostFormModel model)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(string.Empty, "There was an error with your submission.");
+
+                return View(model);
+            }
+
+            try
+            {
+                await this._postService.EditPostAsync(id.Value, model);
+            }
+            catch (InvalidOperationException e)
+            {
+                TempData["Error"] = e.Message;
+
+                return RedirectToAction(nameof(All));
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Delete()
+        {
+            return View();
         }
     }
 }

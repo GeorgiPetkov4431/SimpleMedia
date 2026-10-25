@@ -14,5 +14,9 @@ namespace SimpleMedia.Services.Contracts
         Task CreatePostAsync(PostFormModel inputModel, string userId);
 
         Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId);
+
+        Task<PostFormModel?> GetPostForEditingAsync(int postId, string userId);
+
+        Task EditPostAsync(int postId, PostFormModel model);
     }
 }

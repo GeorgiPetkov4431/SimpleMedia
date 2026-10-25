@@ -70,5 +70,45 @@ namespace SimpleMedia.Services
 
             return postDetails;
         }
+
+        public async Task<PostFormModel?> GetPostForEditingAsync(int postId, string userId)
+        {
+            Post? post = await this._dbContext.Posts
+                .FindAsync(postId);
+
+            if (post == null)
+            {
+                return null;
+            }
+
+            if (post.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to edit this post.");
+            }
+
+            PostFormModel postToEditForm = new PostFormModel()
+            {
+                Title = post.Title,
+                Content = post.Content
+            };
+
+            return postToEditForm;
+        }
+
+        public async Task EditPostAsync(int postId, PostFormModel model)
+        {
+            Post? post = this._dbContext.Posts
+                .Find(postId);
+
+            if (post == null)
+            {
+                throw new InvalidOperationException("Post not found.");
+            }
+
+            post.Title = model.Title;
+            post.Content = model.Content;
+
+            await this._dbContext.SaveChangesAsync();
+        }
     }
 }

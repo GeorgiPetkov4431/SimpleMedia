@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<PostAllViewModel>
 @{
 	ViewData["Title"] = "All Posts";
+    string? errorMessage = TempData["Error"]?.ToString();
+}
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
 }
 
 <h1>All Posts</h1>
