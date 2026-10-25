@@ -16,9 +16,9 @@ namespace SimpleMedia.Services
             this._dbContext = dbContext;
         }
 
-        public IEnumerable<PostAllViewModel> GetAllPosts()
+        public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync()
         {
-            IEnumerable<PostAllViewModel> allPosts = this._dbContext.Posts
+            IEnumerable<PostAllViewModel> allPosts = await this._dbContext.Posts
                 .OrderByDescending(p => p.CreatedOn)
                 .ThenBy(p => p.Title)
                 .ThenBy(p => p.User.UserName)
@@ -29,12 +29,12 @@ namespace SimpleMedia.Services
                     UserName = p.User.UserName!,
                     CreatedOn = p.CreatedOn.ToString(DateTimeFormat)
                 })
-                .ToArray();
+                .ToArrayAsync();
 
             return allPosts;
         }
 
-        public void CreatePost(PostFormModel inputModel, string userId)
+        public async Task CreatePostAsync(PostFormModel inputModel, string userId)
         {
             Post postToCreate = new Post()
             {
@@ -44,15 +44,15 @@ namespace SimpleMedia.Services
                 UserId = userId
             };
 
-            this._dbContext.Posts.Add(postToCreate);
-            this._dbContext.SaveChanges();
+            await this._dbContext.Posts.AddAsync(postToCreate);
+            await this._dbContext.SaveChangesAsync();
         }
 
-        public PostDetailsViewModel? GetPostDetails(int postId)
+        public async Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId)
         {
-            Post? post = this._dbContext.Posts
+            Post? post = await this._dbContext.Posts
                 .Include(p => p.User)
-                .FirstOrDefault(p => p.Id == postId);
+                .FirstOrDefaultAsync(p => p.Id == postId);
 
             if (post == null)
             {

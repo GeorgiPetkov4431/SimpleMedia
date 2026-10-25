@@ -9,10 +9,10 @@ namespace SimpleMedia.Services.Contracts
 {
     public interface IPostService
     {
-        IEnumerable<PostAllViewModel> GetAllPosts();
+        Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync();
 
-        void CreatePost(PostFormModel inputModel, string userId);
+        Task CreatePostAsync(PostFormModel inputModel, string userId);
 
-        PostDetailsViewModel? GetPostDetails(int postId);
+        Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId);
     }
 }

@@ -19,24 +19,24 @@ namespace SimpleMedia.Controllers
         }
 
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            IEnumerable<PostAllViewModel> allposts = this._postService
-                .GetAllPosts();
+            IEnumerable<PostAllViewModel> allposts = await this._postService
+                .GetAllPostsAsync();
 
             return View(allposts);
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(PostFormModel model)
+        public async Task<IActionResult> Create(PostFormModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -45,22 +45,22 @@ namespace SimpleMedia.Controllers
             }
 
             string userId = ValidateAuthorizedUserId(GetUserId());
-            this._postService.CreatePost(model, userId);
+            await this._postService.CreatePostAsync(model, userId);
 
             //ViewBag.SuccessMessage = "Post created successfully!";
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || id <= 0)
             {
                 return NotFound();
             }
 
-            PostDetailsViewModel? postDetails = this._postService
-                .GetPostDetails(id.Value);
+            PostDetailsViewModel? postDetails = await this._postService
+                .GetPostDetailsAsync(id.Value);
 
             if (postDetails == null)
             {
