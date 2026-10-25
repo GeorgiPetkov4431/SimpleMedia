@@ -19,6 +19,9 @@ namespace SimpleMedia.Services
         public IEnumerable<PostAllViewModel> GetAllPosts()
         {
             IEnumerable<PostAllViewModel> allPosts = this._dbContext.Posts
+                .OrderByDescending(p => p.CreatedOn)
+                .ThenBy(p => p.Title)
+                .ThenBy(p => p.User.UserName)
                 .Select(p => new PostAllViewModel()
                 {
                     Id = p.Id,
