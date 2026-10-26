@@ -8,14 +8,12 @@ namespace SimpleMedia.Controllers
 {
     public class PostController : BaseController
     {
-        private readonly SimpleMediaDbContext _dbContext;
         private readonly ILogger<PostController> _logger;
 
         private readonly IPostService _postService;
 
-        public PostController(SimpleMediaDbContext dbContext, ILogger<PostController> logger, IPostService postService)
+        public PostController(ILogger<PostController> logger, IPostService postService)
         {
-            this._dbContext = dbContext;
             this._logger = logger;
             this._postService = postService;
         }
