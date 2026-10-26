@@ -9,12 +9,14 @@ namespace SimpleMedia.Controllers
     public class PostController : BaseController
     {
         private readonly SimpleMediaDbContext _dbContext;
+        private readonly ILogger<PostController> _logger;
 
         private readonly IPostService _postService;
 
-        public PostController(SimpleMediaDbContext dbContext, IPostService postService)
+        public PostController(SimpleMediaDbContext dbContext, ILogger<PostController> logger, IPostService postService)
         {
             this._dbContext = dbContext;
+            this._logger = logger;
             this._postService = postService;
         }
 
@@ -132,9 +134,62 @@ namespace SimpleMedia.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete([FromRoute] int? id)
         {
-            return View();
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            string userId = ValidateAuthorizedUserId(GetUserId());
+            try
+            {
+                PostDeleteViewModel? postForDeletion = await this._postService
+                .GetPostForDeletion(id.Value, userId);
+
+                if (postForDeletion == null)
+                {
+                    return NotFound();
+                }
+
+                return View(postForDeletion);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                TempData["Error"] = e.Message;
+
+                return RedirectToAction(nameof(All));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromRoute] int? id, PostDeleteViewModel model)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            if (id.Value != model.Id)
+            {
+                return BadRequest("There was an error with your request, try again!");
+            }
+            
+            try
+            {
+                await this._postService.DeletePostAsync(id.Value);
+
+                TempData["Success"] = "Post deleted successfully!";
+                return RedirectToAction(nameof(All));
+            }
+            catch (InvalidOperationException e)
+            {
+                this._logger.LogCritical(e, "An error occurred while deleting the post with ID {PostId}.", id.Value);
+                TempData["Error"] = e.Message;
+
+                return RedirectToAction(nameof(All));
+            }
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿@model PostDeleteViewModel
+@{
+	ViewData["Title"] = "Delete Post";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">Are you sure you wish to delete your post titled @Model.Title?</h3>
+                    <h5 class="mt-4 mb-0">You cannot undo this action.</h5>
+                    <p class="text-muted mt-4 mb-0">Created on: @Model.CreatedOn</p>
+                </div>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form asp-action="Delete" asp-controller="Post" method="post">
+                    <input type="hidden" asp-form="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        Yes, I'm sure
+                    </button>
+                    <a asp-action="Details" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

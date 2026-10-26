@@ -3,6 +3,7 @@ using SimpleMedia.Data;
 using SimpleMedia.Data.Models;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
+using System.Formats.Asn1;
 using static SimpleMedia.Common.ApplicationConstants;
 
 namespace SimpleMedia.Services
@@ -83,7 +84,7 @@ namespace SimpleMedia.Services
 
             if (post.UserId != userId)
             {
-                throw new UnauthorizedAccessException("You are not authorized to edit this post.");
+                throw new UnauthorizedAccessException("You cannot edit a post that isn't your own!");
             }
 
             PostFormModel postToEditForm = new PostFormModel()
@@ -97,8 +98,8 @@ namespace SimpleMedia.Services
 
         public async Task EditPostAsync(int postId, PostFormModel model)
         {
-            Post? post = this._dbContext.Posts
-                .Find(postId);
+            Post? post = await this._dbContext.Posts
+                .FindAsync(postId);
 
             if (post == null)
             {
@@ -108,6 +109,47 @@ namespace SimpleMedia.Services
             post.Title = model.Title;
             post.Content = model.Content;
 
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task<PostDeleteViewModel?> GetPostForDeletion(int postId, string userId)
+        {
+            Post? post = await this._dbContext.Posts
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.Id == postId);
+
+            if (post == null)
+            {
+                return null;
+            }
+
+            if (post.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You cannot delete a post that isn't your own!");
+            }
+
+            PostDeleteViewModel postToDelete = new PostDeleteViewModel()
+            {
+                Id = post.Id,
+                Title = post.Title,
+                UserName = post.User.UserName!,
+                CreatedOn = post.CreatedOn.ToString(DateTimeFormat)
+            };
+
+            return postToDelete;
+        }
+
+        public async Task DeletePostAsync(int id)
+        {
+            Post? post = await this._dbContext.Posts
+                .FindAsync(id);
+
+            if (post == null)
+            {
+                throw new InvalidOperationException("Post not found!");
+            }
+
+            this._dbContext.Posts.Remove(post);
             await this._dbContext.SaveChangesAsync();
         }
     }
