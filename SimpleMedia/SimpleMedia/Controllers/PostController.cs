@@ -21,6 +21,7 @@ namespace SimpleMedia.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> All()
         {
             IEnumerable<PostAllViewModel> allposts = await this._postService
@@ -29,14 +30,12 @@ namespace SimpleMedia.Controllers
             return View(allposts);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             return View();
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(PostFormModel model)
         {
@@ -53,6 +52,7 @@ namespace SimpleMedia.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details([FromRoute] int? id)
         {
@@ -72,7 +72,6 @@ namespace SimpleMedia.Controllers
             return View(postDetails);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] int? id)
         {
@@ -102,7 +101,6 @@ namespace SimpleMedia.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit([FromRoute] int? id, PostFormModel model)
         {
@@ -132,7 +130,6 @@ namespace SimpleMedia.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete([FromRoute] int? id)
         {
@@ -162,7 +159,6 @@ namespace SimpleMedia.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete([FromRoute] int? id, PostDeleteViewModel model)
         {

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace SimpleMedia.Controllers
 {
+    [Authorize]
     public abstract class BaseController : Controller
     {
         protected string ValidateAuthorizedUserId(string? userId)
