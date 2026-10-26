@@ -240,7 +240,7 @@ namespace SimpleMedia.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -253,7 +253,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("SimpleMedia.Data.Models.Post", b =>
@@ -285,7 +285,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("SimpleMedia.Data.Models.PostLike", b =>
@@ -300,7 +300,7 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostLikes", (string)null);
+                    b.ToTable("PostLikes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -356,15 +356,19 @@ namespace SimpleMedia.Data.Migrations
 
             modelBuilder.Entity("SimpleMedia.Data.Models.Comment", b =>
                 {
-                    b.HasOne("SimpleMedia.Data.Models.Post", null)
+                    b.HasOne("SimpleMedia.Data.Models.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });

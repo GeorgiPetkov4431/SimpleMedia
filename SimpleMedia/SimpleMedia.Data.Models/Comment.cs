@@ -23,5 +23,10 @@ namespace SimpleMedia.Data.Models
         public string UserId { get; set; } = null!;
 
         public virtual IdentityUser User { get; set; } = null!;
+
+        [ForeignKey(nameof(Post))]
+        public int PostId { get; set; }
+
+        public virtual Post Post { get; set; } = null!;
     }
 }
