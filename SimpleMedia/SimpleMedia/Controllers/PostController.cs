@@ -17,8 +17,8 @@ namespace SimpleMedia.Controllers
             this._postService = postService;
         }
 
-        [HttpGet]
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> All(string? keyword)
         {
             IEnumerable<PostAllViewModel> allposts = await this._postService
@@ -58,8 +58,9 @@ namespace SimpleMedia.Controllers
                 return NotFound();
             }
 
+            string? userId = GetUserId();
             PostDetailsViewModel? postDetails = await this._postService
-                .GetPostDetailsAsync(id.Value);
+                .GetPostDetailsAsync(id.Value, userId);
 
             if (postDetails == null)
             {
@@ -179,6 +180,29 @@ namespace SimpleMedia.Controllers
             catch (InvalidOperationException e)
             {
                 this._logger.LogCritical(e, "An error occurred while deleting the post with ID {PostId}.", id.Value);
+                TempData["Error"] = e.Message;
+
+                return RedirectToAction(nameof(All));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Like([FromRoute] int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            string userId = ValidateAuthorizedUserId(GetUserId());
+            try
+            {
+                await this._postService.LikePostAsync(id.Value, userId);
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+            catch (InvalidOperationException e)
+            {
                 TempData["Error"] = e.Message;
 
                 return RedirectToAction(nameof(All));

@@ -26,6 +26,18 @@
                     <p class="card-text" style="white-space: pre-wrap;">@Model.Content</p>
                     <p class="text-muted mt-4 mb-0">Created on: @Model.CreatedOn</p>
                 </div>
+                <div class="card-footer d-flex gap-2">
+                    <form asp-controller="Post"
+                          asp-action="Like"
+                          asp-route-id="@Model.Id"
+                          method="post">
+                        <button type="submit"
+                                class="btn btn-secondary">
+                            @(Model.LikedByCurrentUser ? "Unlike" : "Like")
+                        </button>
+                    </form>
+                    <p class="text-muted mt-2 mb-0">Likes: @Model.LikesCount</p>
+                </div>
             </div>
         </div>
     </div>

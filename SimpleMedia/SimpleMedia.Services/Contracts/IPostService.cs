@@ -13,7 +13,7 @@ namespace SimpleMedia.Services.Contracts
 
         Task CreatePostAsync(PostFormModel inputModel, string userId);
 
-        Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId);
+        Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId, string? userId);
 
         Task<PostFormModel?> GetPostForEditingAsync(int postId, string userId);
 
@@ -22,5 +22,7 @@ namespace SimpleMedia.Services.Contracts
         Task<PostDeleteViewModel?> GetPostForDeletion(int postId, string userId);
 
         Task DeletePostAsync(int postId);
+
+        Task LikePostAsync(int postId, string userId);
     }
 }

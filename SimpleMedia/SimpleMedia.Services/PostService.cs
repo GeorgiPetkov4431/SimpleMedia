@@ -57,10 +57,11 @@ namespace SimpleMedia.Services
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId)
+        public async Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId, string? userId)
         {
             Post? post = await this._dbContext.Posts
                 .Include(p => p.User)
+                .Include(p => p.PostLikes)
                 .FirstOrDefaultAsync(p => p.Id == postId);
 
             if (post == null)
@@ -74,7 +75,9 @@ namespace SimpleMedia.Services
                 Title = post.Title,
                 Content = post.Content,
                 UserName = post.User.UserName!,
-                CreatedOn = post.CreatedOn.ToString(DateTimeFormat)
+                CreatedOn = post.CreatedOn.ToString(DateTimeFormat),
+                LikesCount = post.PostLikes.Count,
+                LikedByCurrentUser = userId != null && post.PostLikes.Any(pl => pl.UserId == userId)
             };
 
             return postDetails;
@@ -158,6 +161,37 @@ namespace SimpleMedia.Services
             }
 
             this._dbContext.Posts.Remove(post);
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task LikePostAsync(int postId, string userId)
+        {
+            bool postExists = await this._dbContext.Posts
+                .AnyAsync(p => p.Id == postId);
+
+            if (!postExists)
+            {
+                throw new InvalidOperationException("Post not found!");
+            }
+
+            PostLike? alreadyLiked = await this._dbContext.PostLikes
+                .FirstOrDefaultAsync(pl => pl.UserId == userId && pl.PostId == postId);
+
+            if (alreadyLiked == null)
+            {
+                PostLike postLike = new PostLike()
+                {
+                    UserId = userId,
+                    PostId = postId
+                };
+
+                await this._dbContext.PostLikes.AddAsync(postLike);
+            }
+            else
+            {
+                this._dbContext.PostLikes.Remove(alreadyLiked);
+            }
+
             await this._dbContext.SaveChangesAsync();
         }
     }
