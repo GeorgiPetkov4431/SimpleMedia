@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SimpleMedia.Data;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
 
@@ -20,10 +19,10 @@ namespace SimpleMedia.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string? keyword)
         {
             IEnumerable<PostAllViewModel> allposts = await this._postService
-                .GetAllPostsAsync();
+                .GetAllPostsAsync(keyword);
 
             return View(allposts);
         }

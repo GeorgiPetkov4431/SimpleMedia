@@ -9,7 +9,7 @@ namespace SimpleMedia.Services.Contracts
 {
     public interface IPostService
     {
-        Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync();
+        Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword);
 
         Task CreatePostAsync(PostFormModel inputModel, string userId);
 

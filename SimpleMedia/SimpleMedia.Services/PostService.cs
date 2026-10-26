@@ -17,12 +17,20 @@ namespace SimpleMedia.Services
             this._dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync()
+        public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword)
         {
-            IEnumerable<PostAllViewModel> allPosts = await this._dbContext.Posts
+            IQueryable<Post> query = this._dbContext.Posts
                 .OrderByDescending(p => p.CreatedOn)
                 .ThenBy(p => p.Title)
-                .ThenBy(p => p.User.UserName)
+                .ThenBy(p => p.User.UserName);
+
+            if (keyword != null)
+            {
+                query = query
+                    .Where(e => EF.Functions.Like(e.Title, $"%{keyword}%"));
+            }
+
+            IEnumerable<PostAllViewModel> allPosts = await query
                 .Select(p => new PostAllViewModel()
                 {
                     Id = p.Id,

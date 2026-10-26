@@ -21,6 +21,14 @@
 
 <h1>All Posts</h1>
 
+<form asp-controller="Post" asp-action="All" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="keyword" value="@Context.Request.Query["keyword"]" class="form-control" placeholder="Search posts..." />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-controller="Post" asp-action="All" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
 <div class="row">
 
 	@foreach (PostAllViewModel p in Model)
