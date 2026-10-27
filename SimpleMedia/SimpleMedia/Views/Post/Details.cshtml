@@ -44,7 +44,22 @@
             <div class="mt-4">
                 <h4 class="mb-3">Comments:</h4>
 
-                <p class="text-muted">No comments yet. Be the first to comment!</p>
+                @if (Model.Comments != null && Model.Comments.Any())
+                {
+                    <div class="list-group mb-3">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="list-group-item">
+                                <p class="mb-1"><strong>@@@comment.UserName</strong> <span class="text-muted">@comment.CreatedOn</span></p>
+                                <p class="mb-0" style="white-space: pre-wrap;">@comment.Content</p>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No comments yet. Be the first to comment!</p>
+                }
 
                 <a asp-controller="Comment"
                    asp-action="Add"

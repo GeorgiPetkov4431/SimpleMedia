@@ -1,4 +1,6 @@
-﻿namespace SimpleMedia.Web.ViewModels.Post
+﻿using SimpleMedia.Web.ViewModels.Comment;
+
+namespace SimpleMedia.Web.ViewModels.Post
 {
     public class PostDetailsViewModel
     {
@@ -15,5 +17,8 @@
         public int LikesCount { get; set; }
 
         public bool LikedByCurrentUser { get; set; }
+
+        public IEnumerable<CommentAllViewModel> Comments { get; set; }
+            = new List<CommentAllViewModel>();
     }
 }

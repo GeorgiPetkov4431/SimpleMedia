@@ -3,7 +3,7 @@ using SimpleMedia.Data;
 using SimpleMedia.Data.Models;
 using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
-using System.Formats.Asn1;
+using SimpleMedia.Web.ViewModels.Comment;
 using static SimpleMedia.Common.ApplicationConstants;
 
 namespace SimpleMedia.Services
@@ -84,6 +84,8 @@ namespace SimpleMedia.Services
             Post? post = await this._dbContext.Posts
                 .Include(p => p.User)
                 .Include(p => p.PostLikes)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(p => p.Id == postId);
 
             if (post == null)
@@ -99,7 +101,16 @@ namespace SimpleMedia.Services
                 UserName = post.User.UserName!,
                 CreatedOn = post.CreatedOn.ToString(DateTimeFormat),
                 LikesCount = post.PostLikes.Count,
-                LikedByCurrentUser = userId != null && post.PostLikes.Any(pl => pl.UserId == userId)
+                LikedByCurrentUser = userId != null && post.PostLikes.Any(pl => pl.UserId == userId),
+                Comments = post.Comments
+                    .OrderBy(c => c.CreatedOn)
+                    .Select(c => new CommentAllViewModel()
+                    {
+                        UserName = c.User.UserName!,
+                        Content = c.Content,
+                        CreatedOn = c.CreatedOn.ToString(DateTimeFormat)
+                    })
+                    .ToArray()
             };
 
             return postDetails;
