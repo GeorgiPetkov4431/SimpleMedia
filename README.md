@@ -206,7 +206,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 **Georgi Petkov** – [@GeorgiPetkov4431](https://github.com/GeorgiPetkov4431)
 
-Project Link: [https://github.com/your-username/your-repo-name](https://github.com/your-username/your-repo-name)
+Project Link: [https://github.com/GeorgiPetkov4431/SimpleMedia.git](https://github.com/GeorgiPetkov4431/SimpleMedia.git)
 
 ---
 
