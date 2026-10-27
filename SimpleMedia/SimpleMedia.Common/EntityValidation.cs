@@ -12,6 +12,11 @@
             public const string CreatedOnColumnType = "datetime2";
         }
 
+        public static class PostLike
+        {
+            public const string LikedOnColumnType = "datetime2";
+        }
+
         public static class Comment
         {
             public const int ContentMinLength = 1;

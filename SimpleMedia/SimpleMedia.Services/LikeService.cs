@@ -20,7 +20,7 @@ namespace SimpleMedia.Services
         public async Task<IEnumerable<LikeAllViewModel>> GetAllLikedPostsAsync(string userId)
         {
             IEnumerable<LikeAllViewModel> likedPosts = await this._dbContext.PostLikes
-                .OrderBy(pl => pl.Post.CreatedOn)
+                .OrderByDescending(pl => pl.LikedOn)
                 .Where(pl => pl.UserId == userId)
                 .Select(pl => new LikeAllViewModel()
                 {
@@ -52,7 +52,8 @@ namespace SimpleMedia.Services
                 PostLike postLike = new PostLike()
                 {
                     UserId = userId,
-                    PostId = postId
+                    PostId = postId,
+                    LikedOn = DateTime.UtcNow
                 };
 
                 await this._dbContext.PostLikes.AddAsync(postLike);

@@ -301,6 +301,9 @@ namespace SimpleMedia.Data.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("LikedOn")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("UserId", "PostId");
 
                     b.HasIndex("PostId");
