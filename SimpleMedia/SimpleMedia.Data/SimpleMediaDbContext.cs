@@ -17,6 +17,8 @@ namespace SimpleMedia.Data
 
         public virtual DbSet<PostLike> PostLikes { get; set; } = null!;
 
+        public virtual DbSet<Tag> Tags { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

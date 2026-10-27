@@ -31,6 +31,7 @@ namespace SimpleMedia
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ILikeService, LikeService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddScoped<ITagService, TagService>();
 
             builder.Services.AddControllersWithViews();
 

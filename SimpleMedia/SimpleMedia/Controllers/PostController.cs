@@ -11,14 +11,17 @@ namespace SimpleMedia.Controllers
 
         private readonly IPostService _postService;
         private readonly ILikeService _likeService;
+        private readonly ITagService _tagService;
 
         public PostController(ILogger<PostController> logger,
             IPostService postService,
-            ILikeService likeService)
+            ILikeService likeService,
+            ITagService tagService)
         {
             this._logger = logger;
             this._postService = postService;
             this._likeService = likeService;
+            this._tagService = tagService;
         }
 
         [AllowAnonymous]
@@ -34,7 +37,10 @@ namespace SimpleMedia.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            PostFormModel postFormModel = await this._postService
+                .GetPostFormModelAsync();
+
+            return View(postFormModel);
         }
 
         [HttpPost]
@@ -43,14 +49,38 @@ namespace SimpleMedia.Controllers
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError(string.Empty, "There was an error with your submission.");
+
+                model.Tags = await this._tagService
+                    .LoadTagsDropDownViewAsync();
                 return View(model);
             }
 
-            string userId = ValidateAuthorizedUserId(GetUserId());
-            await this._postService.CreatePostAsync(model, userId);
+            bool isTagValid = await this._tagService
+                .CheckTagExists(model.TagId);
 
-            TempData["Success"] = "Post created successfully!";
-            return RedirectToAction(nameof(All));
+            if (!isTagValid)
+            {
+                ModelState.AddModelError(nameof(PostFormModel.TagId), "The selected tag does not exist.");
+
+                model.Tags = await this._tagService
+                    .LoadTagsDropDownViewAsync();
+                return View(model);
+            }
+
+            try
+            {
+                string userId = ValidateAuthorizedUserId(GetUserId());
+                await this._postService.CreatePostAsync(model, userId);
+
+                TempData["Success"] = "Post created successfully!";
+                return RedirectToAction(nameof(All));
+            }
+            catch (InvalidOperationException e)
+            {
+                this._logger.LogCritical(e, "An error occurred while creating a new post.");
+
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [AllowAnonymous]
@@ -82,11 +112,11 @@ namespace SimpleMedia.Controllers
                 return NotFound();
             }
 
-            string userId = ValidateAuthorizedUserId(GetUserId());
             try
             {
+                string userId = ValidateAuthorizedUserId(GetUserId());
                 PostFormModel? postForEditing = await this._postService
-                .GetPostForEditingAsync(id.Value, userId);
+                    .GetPostForEditingAsync(id.Value, userId);
 
                 if (postForEditing == null)
                 {
@@ -99,6 +129,13 @@ namespace SimpleMedia.Controllers
             {
                 TempData["Error"] = e.Message;
 
+                return RedirectToAction(nameof(All));
+            }
+            catch (InvalidOperationException e)
+            {
+                this._logger.LogCritical(e, "An error occurred while retrieving the post for editing with ID {PostId}.", id.Value);
+                
+                this.TempData["Error"] = e.Message;
                 return RedirectToAction(nameof(All));
             }
         }
@@ -115,18 +152,32 @@ namespace SimpleMedia.Controllers
             {
                 ModelState.AddModelError(string.Empty, "There was an error with your submission.");
 
+                model.Tags = await this._tagService
+                    .LoadTagsDropDownViewAsync();
+                return View(model);
+            }
+
+            bool isTagValid = await this._tagService
+                .CheckTagExists(model.TagId);
+            if (!isTagValid)
+            {
+                ModelState.AddModelError(nameof(PostFormModel.TagId), "The selected tag does not exist.");
+
+                model.Tags = await this._tagService
+                    .LoadTagsDropDownViewAsync();
                 return View(model);
             }
 
             try
             {
-                await this._postService.EditPostAsync(id.Value, model);
+                await this._postService
+                    .EditPostAsync(id.Value, model);
+
+                TempData["Success"] = "Post edited successfully!";
             }
             catch (InvalidOperationException e)
             {
                 TempData["Error"] = e.Message;
-
-                return RedirectToAction(nameof(All));
             }
 
             return RedirectToAction(nameof(All));
@@ -140,9 +191,9 @@ namespace SimpleMedia.Controllers
                 return NotFound();
             }
 
-            string userId = ValidateAuthorizedUserId(GetUserId());
             try
             {
+                string userId = ValidateAuthorizedUserId(GetUserId());
                 PostDeleteViewModel? postForDeletion = await this._postService
                 .GetPostForDeletion(id.Value, userId);
 
@@ -157,6 +208,13 @@ namespace SimpleMedia.Controllers
             {
                 TempData["Error"] = e.Message;
 
+                return RedirectToAction(nameof(All));
+            }
+            catch (InvalidOperationException e)
+            {
+                this._logger.LogCritical(e, "An error occurred while retrieving the post for deletion with ID {PostId}.", id.Value);
+                
+                this.TempData["Error"] = e.Message;
                 return RedirectToAction(nameof(All));
             }
         }

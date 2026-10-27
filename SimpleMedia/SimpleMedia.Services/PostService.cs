@@ -5,6 +5,7 @@ using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels.Post;
 using SimpleMedia.Web.ViewModels.Comment;
 using static SimpleMedia.Common.ApplicationConstants;
+using SimpleMedia.Web.ViewModels.Tag;
 
 namespace SimpleMedia.Services
 {
@@ -12,9 +13,12 @@ namespace SimpleMedia.Services
     {
         private readonly SimpleMediaDbContext _dbContext;
 
-        public PostService(SimpleMediaDbContext dbContext)
+        private readonly ITagService _tagService;
+
+        public PostService(SimpleMediaDbContext dbContext, ITagService tagService)
         {
             this._dbContext = dbContext;
+            this._tagService = tagService;
         }
 
         public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword)
@@ -62,8 +66,19 @@ namespace SimpleMedia.Services
                 .ToArrayAsync();
 
             return topPosts;
+        }
 
-            throw new NotImplementedException();
+        public async Task<PostFormModel> GetPostFormModelAsync()
+        {
+            IEnumerable<TagDropDownViewModel> tags = await this._tagService
+                .LoadTagsDropDownViewAsync();
+
+            PostFormModel postFormModel = new PostFormModel()
+            {
+                Tags = tags
+            };
+
+            return postFormModel;
         }
 
         public async Task CreatePostAsync(PostFormModel inputModel, string userId)
@@ -73,6 +88,7 @@ namespace SimpleMedia.Services
                 Title = inputModel.Title,
                 Content = inputModel.Content,
                 CreatedOn = DateTime.UtcNow,
+                TagId = inputModel.TagId,
                 UserId = userId
             };
 
@@ -135,7 +151,10 @@ namespace SimpleMedia.Services
             PostFormModel postToEditForm = new PostFormModel()
             {
                 Title = post.Title,
-                Content = post.Content
+                Content = post.Content,
+                TagId = post.TagId,
+                Tags = await this._tagService
+                    .LoadTagsDropDownViewAsync()
             };
 
             return postToEditForm;
@@ -153,6 +172,7 @@ namespace SimpleMedia.Services
 
             post.Title = model.Title;
             post.Content = model.Content;
+            post.TagId = model.TagId;
 
             await this._dbContext.SaveChangesAsync();
         }

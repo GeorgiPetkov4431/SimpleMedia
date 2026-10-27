@@ -326,7 +326,7 @@ namespace SimpleMedia.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
 
                     b.HasData(
                         new

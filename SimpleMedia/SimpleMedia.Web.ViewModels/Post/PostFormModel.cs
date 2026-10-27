@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SimpleMedia.Web.ViewModels.Tag;
+using System.ComponentModel.DataAnnotations;
 using static SimpleMedia.Common.EntityValidation.Post;
 
 namespace SimpleMedia.Web.ViewModels.Post
@@ -12,5 +13,10 @@ namespace SimpleMedia.Web.ViewModels.Post
         [Required]
         [StringLength(ContentMaxLength, MinimumLength = ContentMinLength, ErrorMessage = "The Content of your post must be between {2} and {1} characters long.")]
         public string Content { get; set; } = null!;
+
+        public int TagId { get; set; }
+
+        public IEnumerable<TagDropDownViewModel> Tags
+            = new List<TagDropDownViewModel>();
     }
 }

@@ -21,6 +21,17 @@
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>
 
+    <div class="mb-3">
+        <label asp-for="@Model.TagId" class="form-label"></label>
+        <select asp-for="@Model.TagId" class="form-control" aria-required="true">
+            @foreach (var tag in Model.Tags)
+            {
+                <option value="@tag.Id">@tag.Name</option>
+            }
+        </select>
+        <span asp-validation-for="@Model.TagId" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="Details" asp-controller="Post" asp-route-id="@Context.Request.RouteValues["id"]" class="btn btn-secondary">Back</a>
 </form>
