@@ -36,7 +36,8 @@ namespace SimpleMedia.Services
                     Id = p.Id,
                     Title = p.Title,
                     UserName = p.User.UserName!,
-                    CreatedOn = p.CreatedOn.ToString(DateTimeFormat)
+                    CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
+                    LikesCount = p.PostLikes.Count
                 })
                 .ToArrayAsync();
 
