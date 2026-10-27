@@ -25,5 +25,11 @@
             public const int UserNameMinLength = 3;
             public const int UserNameMaxLength = 15;
         }
+
+        public static class Tag
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 30;
+        }
     }
 }

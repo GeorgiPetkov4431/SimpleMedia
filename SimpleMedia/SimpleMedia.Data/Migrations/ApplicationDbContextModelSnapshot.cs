@@ -272,6 +272,9 @@ namespace SimpleMedia.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -282,6 +285,8 @@ namespace SimpleMedia.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TagId");
 
                     b.HasIndex("UserId");
 
@@ -301,6 +306,23 @@ namespace SimpleMedia.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("PostLikes");
+                });
+
+            modelBuilder.Entity("SimpleMedia.Data.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -375,11 +397,19 @@ namespace SimpleMedia.Data.Migrations
 
             modelBuilder.Entity("SimpleMedia.Data.Models.Post", b =>
                 {
+                    b.HasOne("SimpleMedia.Data.Models.Tag", "Tag")
+                        .WithMany("Posts")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Tag");
 
                     b.Navigation("User");
                 });
@@ -408,6 +438,11 @@ namespace SimpleMedia.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("PostLikes");
+                });
+
+            modelBuilder.Entity("SimpleMedia.Data.Models.Tag", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
