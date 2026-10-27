@@ -323,7 +323,52 @@ namespace SimpleMedia.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Tag");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "General"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Discussion"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Gaming"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Music"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Movies"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Technology"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Travel"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Lifestyle"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
