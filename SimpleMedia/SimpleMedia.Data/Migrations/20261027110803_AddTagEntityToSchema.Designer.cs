@@ -12,7 +12,7 @@ using SimpleMedia.Data;
 namespace SimpleMedia.Data.Migrations
 {
     [DbContext(typeof(SimpleMediaDbContext))]
-    [Migration("20261027105744_AddTagEntityToSchema")]
+    [Migration("20261027110803_AddTagEntityToSchema")]
     partial class AddTagEntityToSchema
     {
         /// <inheritdoc />
@@ -319,9 +319,10 @@ namespace SimpleMedia.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Name")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
