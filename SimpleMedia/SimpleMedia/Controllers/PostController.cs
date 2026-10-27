@@ -26,10 +26,14 @@ namespace SimpleMedia.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All(string? keyword)
+        public async Task<IActionResult> All(string? keyword, int? tagId)
         {
             IEnumerable<PostAllViewModel> allposts = await this._postService
-                .GetAllPostsAsync(keyword);
+                .GetAllPostsAsync(keyword, tagId);
+
+            ViewData["AllTags"] = await this._tagService
+                .LoadTagsDropDownViewAsync();
+            ViewData["SelectedTagId"] = tagId;
 
             return View(allposts);
         }

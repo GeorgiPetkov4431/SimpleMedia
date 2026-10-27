@@ -21,17 +21,23 @@ namespace SimpleMedia.Services
             this._tagService = tagService;
         }
 
-        public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword)
+        public async Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword, int? tagId)
         {
             IQueryable<Post> query = this._dbContext.Posts
                 .OrderByDescending(p => p.CreatedOn)
                 .ThenBy(p => p.Title)
                 .ThenBy(p => p.User.UserName);
 
-            if (keyword != null)
+            if (!string.IsNullOrWhiteSpace(keyword))
             {
                 query = query
                     .Where(e => EF.Functions.Like(e.Title, $"%{keyword}%"));
+            }
+
+            if (tagId.HasValue && tagId.Value > 0)
+            {
+                query = query
+                    .Where(p => p.TagId == tagId.Value);
             }
 
             IEnumerable<PostAllViewModel> allPosts = await query

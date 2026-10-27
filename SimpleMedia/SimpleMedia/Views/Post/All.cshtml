@@ -1,8 +1,14 @@
-﻿@model IEnumerable<PostAllViewModel>
+﻿@using SimpleMedia.Web.ViewModels.Tag
+@model IEnumerable<PostAllViewModel>
 @{
-	ViewData["Title"] = "All Posts";
+    ViewData["Title"] = "All Posts";
     string? errorMessage = TempData["Error"]?.ToString();
-	string? successMessage = TempData["Success"]?.ToString();
+    string? successMessage = TempData["Success"]?.ToString();
+
+    IEnumerable<TagDropDownViewModel> allTags = ViewData["AllTags"] as IEnumerable<TagDropDownViewModel>
+        ?? Enumerable.Empty<TagDropDownViewModel>();
+
+    int? selectedTagId = ViewData["SelectedTagId"] as int?;
 }
 
 @if (!string.IsNullOrWhiteSpace(errorMessage))
@@ -21,13 +27,31 @@
 
 <h1>All Posts</h1>
 
-<form asp-controller="Post" asp-action="All" method="get" class="mb-3 d-flex gap-2">
-    <div class="input-group">
-        <input type="text" name="keyword" value="@Context.Request.Query["keyword"]" class="form-control" placeholder="Search posts..." />
+<form asp-controller="Post" asp-action="All" method="get" class="mb-3 d-flex gap-2 align-items-end flex-wrap">
+    <div>
+        <label for="keyword" class="form-label">Search</label>
+        <div class="input-group">
+            <input id="keyword" type="text" name="keyword" value="@Context.Request.Query["keyword"]" class="form-control" placeholder="Search posts..." />
+        </div>
+    </div>
+
+    <div>
+        <label for="tagId" class="form-label">Tag</label>
+        <select id="tagId" name="tagId" class="form-select">
+            <option value="">All tags</option>
+            @foreach (var tag in allTags)
+            {
+                <option value="@tag.Id" selected="@(selectedTagId == tag.Id)">@tag.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary">Search</button>
         <a asp-controller="Post" asp-action="All" class="btn btn-outline-secondary">Clear</a>
     </div>
-    <a asp-controller="Post" asp-action="Create" class="btn btn-warning">Create</a>
+
+    <a asp-controller="Post" asp-action="Create" class="btn btn-warning ms-auto">Create</a>
 </form>
 
 <div class="row">

@@ -10,15 +10,15 @@
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="@Model.Title" class="form-label"></label>
+        <input asp-for="@Model.Title" class="form-control" />
+        <span asp-validation-for="@Model.Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Content" class="form-label"></label>
-        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
-        <span asp-validation-for="Content" class="text-danger"></span>
+        <label asp-for="@Model.Content" class="form-label"></label>
+        <textarea asp-for="@Model.Content" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="@Model.Content" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
