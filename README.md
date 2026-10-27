@@ -98,15 +98,16 @@ The app will be available at `https://localhost:5001` or `http://localhost:5000`
 
 ## 💻 Usage
 
-Describe how to use the main features of the app after launching it. Add screenshots if possible.
-
 ```
 1. Navigate to /Register to create an account.
 2. Log in at /Login.
-3. Use the dashboard to manage your [entities].
+3. Use the dashboard at /Post/All to manage your Posts.
+4. Create posts by clicking on the Create button.
+5. Navigate to any post to leave a Like on it.
+6. Navigate to any post to leave a Comment on it.
+7. Navigate to your posts to Edit or Delete them.
+8. Look up posts by their Tag if you're searching for something specific.
 ```
-
-> 💡 **Tip:** You can add screenshots using: `![Screenshot](docs/screenshot.png)`
 
 ---
 
