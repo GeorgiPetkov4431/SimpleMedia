@@ -11,5 +11,7 @@
         public string CreatedOn { get; set; } = null!;
 
         public int LikesCount { get; set; }
+
+        public string TagName { get; set; } = null!;
     }
 }

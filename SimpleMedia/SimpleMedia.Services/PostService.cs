@@ -41,6 +41,7 @@ namespace SimpleMedia.Services
                     Title = p.Title,
                     UserName = p.User.UserName!,
                     CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
+                    TagName = p.Tag.Name,
                     LikesCount = p.PostLikes.Count
                 })
                 .ToArrayAsync();
@@ -61,6 +62,7 @@ namespace SimpleMedia.Services
                     Title = p.Title,
                     UserName = p.User.UserName!,
                     CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
+                    TagName = p.Tag.Name,
                     LikesCount = p.PostLikes.Count
                 })
                 .ToArrayAsync();
@@ -101,6 +103,7 @@ namespace SimpleMedia.Services
             Post? post = await this._dbContext.Posts
                 .Include(p => p.User)
                 .Include(p => p.PostLikes)
+                .Include(p => p.Tag)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(p => p.Id == postId);
@@ -118,6 +121,7 @@ namespace SimpleMedia.Services
                 UserName = post.User.UserName!,
                 CreatedOn = post.CreatedOn.ToString(DateTimeFormat),
                 LikesCount = post.PostLikes.Count,
+                TagName = post.Tag.Name,
                 LikedByCurrentUser = userId != null && post.PostLikes.Any(pl => pl.UserId == userId),
                 Comments = post.Comments
                     .OrderBy(c => c.CreatedOn)

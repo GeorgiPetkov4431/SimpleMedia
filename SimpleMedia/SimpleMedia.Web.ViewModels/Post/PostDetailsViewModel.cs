@@ -14,6 +14,8 @@ namespace SimpleMedia.Web.ViewModels.Post
 
         public string CreatedOn { get; set; } = null!;
 
+        public string TagName { get; set; } = null!;
+
         public int LikesCount { get; set; }
 
         public bool LikedByCurrentUser { get; set; }
