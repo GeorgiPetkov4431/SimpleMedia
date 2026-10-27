@@ -185,36 +185,5 @@ namespace SimpleMedia.Services
             this._dbContext.Posts.Remove(post);
             await this._dbContext.SaveChangesAsync();
         }
-
-        public async Task LikePostAsync(int postId, string userId)
-        {
-            bool postExists = await this._dbContext.Posts
-                .AnyAsync(p => p.Id == postId);
-
-            if (!postExists)
-            {
-                throw new InvalidOperationException("Post not found!");
-            }
-
-            PostLike? alreadyLiked = await this._dbContext.PostLikes
-                .FirstOrDefaultAsync(pl => pl.UserId == userId && pl.PostId == postId);
-
-            if (alreadyLiked == null)
-            {
-                PostLike postLike = new PostLike()
-                {
-                    UserId = userId,
-                    PostId = postId
-                };
-
-                await this._dbContext.PostLikes.AddAsync(postLike);
-            }
-            else
-            {
-                this._dbContext.PostLikes.Remove(alreadyLiked);
-            }
-
-            await this._dbContext.SaveChangesAsync();
-        }
     }
 }

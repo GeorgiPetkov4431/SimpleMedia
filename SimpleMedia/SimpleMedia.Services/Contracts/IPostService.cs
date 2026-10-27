@@ -24,7 +24,5 @@ namespace SimpleMedia.Services.Contracts
         Task<PostDeleteViewModel?> GetPostForDeletion(int postId, string userId);
 
         Task DeletePostAsync(int postId);
-
-        Task LikePostAsync(int postId, string userId);
     }
 }

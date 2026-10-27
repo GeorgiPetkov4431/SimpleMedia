@@ -10,11 +10,15 @@ namespace SimpleMedia.Controllers
         private readonly ILogger<PostController> _logger;
 
         private readonly IPostService _postService;
+        private readonly ILikeService _likeService;
 
-        public PostController(ILogger<PostController> logger, IPostService postService)
+        public PostController(ILogger<PostController> logger,
+            IPostService postService,
+            ILikeService likeService)
         {
             this._logger = logger;
             this._postService = postService;
+            this._likeService = likeService;
         }
 
         [AllowAnonymous]
@@ -197,7 +201,7 @@ namespace SimpleMedia.Controllers
             string userId = ValidateAuthorizedUserId(GetUserId());
             try
             {
-                await this._postService.LikePostAsync(id.Value, userId);
+                await this._likeService.LikePostAsync(id.Value, userId);
 
                 return RedirectToAction(nameof(Details), new { id });
             }
