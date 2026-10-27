@@ -9,5 +9,7 @@
         public string UserName { get; set; } = null!;
 
         public string CreatedOn { get; set; } = null!;
+
+        public int LikesCount { get; set; }
     }
 }

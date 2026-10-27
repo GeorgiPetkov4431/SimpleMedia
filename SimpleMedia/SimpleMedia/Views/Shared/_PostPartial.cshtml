@@ -1,0 +1,25 @@
+﻿@model PostAllViewModel
+
+<div class="card col-3 h-100" style="width: 20rem;">
+
+    <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
+        <div class="row">
+            <div class="col-12">
+                <div class="title-wrapper" style="height: 6em; overflow: hidden;">
+                    <p class="text-muted mb-1">@@@Model.UserName</p>
+                    <h4 class="card-title mt-1">@Model.Title</h4>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-muted mt-0 mb-0">Created On: @Model.CreatedOn</p>
+        <p class="text-muted mt-1 mb-0">Likes: @Model.LikesCount</p>
+    </div>
+
+    <div class="row gx-0">
+        <div class="col-12 px-1">
+            <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded btn-dark-text">View Post</a>
+        </div>
+    </div>
+</div>

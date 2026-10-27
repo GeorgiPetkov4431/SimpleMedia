@@ -43,6 +43,28 @@ namespace SimpleMedia.Services
             return allPosts;
         }
 
+        public async Task<IEnumerable<PostAllViewModel>?> GetTopPostsAsync()
+        {
+            IEnumerable<PostAllViewModel> topPosts = await this._dbContext.Posts
+                .OrderByDescending(p => p.PostLikes.Count)
+                .ThenByDescending(p => p.CreatedOn)
+                .Where(p => p.CreatedOn >= DateTime.UtcNow.AddDays(-7) && p.PostLikes.Count > 0)
+                .Take(TopPostCount)
+                .Select(p => new PostAllViewModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    UserName = p.User.UserName!,
+                    CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
+                    LikesCount = p.PostLikes.Count
+                })
+                .ToArrayAsync();
+
+            return topPosts;
+
+            throw new NotImplementedException();
+        }
+
         public async Task CreatePostAsync(PostFormModel inputModel, string userId)
         {
             Post postToCreate = new Post()

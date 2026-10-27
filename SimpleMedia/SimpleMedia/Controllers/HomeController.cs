@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SimpleMedia.Services.Contracts;
 using SimpleMedia.Web.ViewModels;
+using SimpleMedia.Web.ViewModels.Post;
 
 namespace SimpleMedia.Controllers
 {
@@ -9,15 +11,21 @@ namespace SimpleMedia.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IPostService _postService;
+
+        public HomeController(ILogger<HomeController> logger, IPostService postService)
         {
             _logger = logger;
+            _postService = postService;
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<PostAllViewModel>? topPosts = await this._postService
+                .GetTopPostsAsync();
+
+            return View(topPosts);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

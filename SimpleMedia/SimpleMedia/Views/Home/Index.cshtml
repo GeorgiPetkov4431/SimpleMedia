@@ -1,8 +1,18 @@
-﻿@{
+﻿@model IEnumerable<PostAllViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to SimpleMedia</h1>
-    <p>Feel free to <a asp-action="Create" asp-controller="Post">Create</a> a post.</p>
+<h1 class="text-center">Welcome to SimpleMedia!</h1>
+
+<div>
+    <h3>Top Posts:</h3>
+    @if (!Model.Any())
+    {
+        <p>There are no top posts yet. Try to make it big by <a asp-action="Create" asp-controller="Post">Creating</a> a post yourself!</p>
+	}
+    else foreach (var post in Model)
+    {
+        <partial name="_PostPartial" model="post" />
+	}
 </div>

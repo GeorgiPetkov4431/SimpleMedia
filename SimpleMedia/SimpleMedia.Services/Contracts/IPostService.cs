@@ -11,6 +11,8 @@ namespace SimpleMedia.Services.Contracts
     {
         Task<IEnumerable<PostAllViewModel>> GetAllPostsAsync(string? keyword);
 
+        Task<IEnumerable<PostAllViewModel>?> GetTopPostsAsync();
+
         Task CreatePostAsync(PostFormModel inputModel, string userId);
 
         Task<PostDetailsViewModel?> GetPostDetailsAsync(int postId, string? userId);
