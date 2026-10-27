@@ -198,9 +198,9 @@ namespace SimpleMedia.Controllers
                 return NotFound();
             }
 
-            string userId = ValidateAuthorizedUserId(GetUserId());
             try
             {
+                string userId = ValidateAuthorizedUserId(GetUserId());
                 await this._likeService.LikePostAsync(id.Value, userId);
 
                 return RedirectToAction(nameof(Details), new { id });

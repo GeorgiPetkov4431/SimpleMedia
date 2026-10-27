@@ -39,6 +39,18 @@
                     <p class="text-muted mt-2 mb-0">Likes: @Model.LikesCount</p>
                 </div>
             </div>
+
+            <!-- Comments section -->
+            <div class="mt-4">
+                <h4 class="mb-3">Comments:</h4>
+
+                <p class="text-muted">No comments yet. Be the first to comment!</p>
+
+                <a asp-controller="Comment"
+                   asp-action="Add"
+                   asp-route-postId="@Model.Id"
+                   class="btn btn-primary">Write Comment</a>
+            </div>
         </div>
     </div>
 </div>

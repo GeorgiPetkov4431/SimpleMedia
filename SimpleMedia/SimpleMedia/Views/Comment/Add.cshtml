@@ -1,0 +1,27 @@
+﻿@model CommentFormModel
+@{
+	ViewData["Title"] = "Add Comment";
+}
+
+<h2>Respond to @@@Model.PostAuthorUserName's Post</h2>
+
+<form asp-controller="Comment" asp-action="Add" method="post">
+	<input asp-for="PostId" type="hidden" />
+
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+	<div class="mb-3">
+		@* <label asp-for="Content" class="form-label"></label> *@
+		<textarea asp-for="Content" class="form-control" rows="5" placeholder="Write your comment here..."></textarea>
+		<span asp-validation-for="Content" class="text-danger"></span>
+	</div>
+
+	<div class="d-flex justify-content-between mt-4">
+		<a asp-controller="Post" asp-action="Details" asp-route-id="@Model.PostId" class="btn btn-secondary">Back</a>
+		<button type="submit" class="btn btn-primary">Comment</button>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

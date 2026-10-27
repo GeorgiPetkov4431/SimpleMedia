@@ -20,6 +20,7 @@ namespace SimpleMedia.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             IEnumerable<PostAllViewModel>? topPosts = await this._postService

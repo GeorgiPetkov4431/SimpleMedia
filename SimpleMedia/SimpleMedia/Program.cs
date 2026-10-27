@@ -30,6 +30,7 @@ namespace SimpleMedia
             // Use DI for Services Here:
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ILikeService, LikeService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
 
             builder.Services.AddControllersWithViews();
 

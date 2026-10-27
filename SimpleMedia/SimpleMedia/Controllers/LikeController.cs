@@ -13,6 +13,7 @@ namespace SimpleMedia.Controllers
             this._likeService = likeService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             string userId = ValidateAuthorizedUserId(GetUserId());
@@ -22,6 +23,7 @@ namespace SimpleMedia.Controllers
             return View(likedPosts);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Unlike(int? id)
         {
             if (id == null || id <= 0)
@@ -29,9 +31,9 @@ namespace SimpleMedia.Controllers
                 return NotFound();
             }
 
-            string userId = ValidateAuthorizedUserId(GetUserId());
             try
             {
+                string userId = ValidateAuthorizedUserId(GetUserId());
                 await this._likeService.LikePostAsync(id.Value, userId);
 
                 return RedirectToAction(nameof(All));
